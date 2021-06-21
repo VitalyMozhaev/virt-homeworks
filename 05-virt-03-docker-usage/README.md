@@ -77,6 +77,10 @@ Hey, Netology
 
 https://hub.docker.com/r/vitalymozhaev/netology-docker-usage
 
+Результат работы контейнера:
+
+![Результат работы контейнера](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-03-docker-usage/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202.png)
+
 ## Задача 3 
 
 - Запустите первый контейнер из образа centos c любым тэгом в фоновом режиме, подключив папку info из текущей рабочей директории на хостовой машине в /share/info контейнера;
