@@ -89,4 +89,13 @@ https://hub.docker.com/r/vitalymozhaev/netology-docker-usage
 - Добавьте еще один файл в папку info на хостовой машине;
 - Подключитесь во второй контейнер и отобразите листинг и содержание файлов в /info контейнера.
 
+## Ответ:
+
+Работающие контейнеры:
+
+![Работающие контейнеры](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-03-docker-usage/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%203_1.png)
+
+Результат выполнения:
+
+![Результат работы контейнера](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-03-docker-usage/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%203_2.png)
 
