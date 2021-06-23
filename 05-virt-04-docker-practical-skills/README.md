@@ -27,6 +27,22 @@ CMD ["Hey, netology”]
 
 ## Ответ:
 
+- Dockerfile:
+```text
+FROM archlinux
+
+RUN yes | pacman -Syu && \
+    yes | pacman -S ponysay
+
+ENTRYPOINT ["/usr/bin/ponysay"]
+CMD ["Hey, netology”]
+```
+
+- Скрин вывода командной строки
+
+![Скрин вывода командной строки](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%201.png)
+
+- Ссылка на образ: https://hub.docker.com/r/vitalymozhaev/netology-arch-ponysay
 
 
 ## Задача 2 
