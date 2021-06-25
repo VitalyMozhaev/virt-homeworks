@@ -145,8 +145,8 @@ https://hub.docker.com/r/vitalymozhaev/ubuntu-jenkins
     - Выставить у приложения (и контейнера) порт 3000 для прослушки входящих запросов  
     - Соберите образ и запустите контейнер в фоновом режиме с публикацией порта
 
-- Запустить второй контейнер из образа ubuntu:latest 
-- Создайть `docker network` и добавьте в нее оба запущенных контейнера
+- Запустить второй контейнер из образа ubuntu:latest
+- Создайте `docker network` и добавьте в нее оба запущенных контейнера
 - Используя `docker exec` запустить командную строку контейнера `ubuntu` в интерактивном режиме
 - Используя утилиту `curl` вызвать путь `/` контейнера с npm приложением  
 
@@ -157,5 +157,87 @@ https://hub.docker.com/r/vitalymozhaev/ubuntu-jenkins
 
 ## Ответ:
 
+- Dockerfile с npm приложением
 
+```text
+FROM node
+
+ADD https://github.com/simplicitesoftware/nodejs-demo/archive/refs/heads/master.zip /
+
+RUN apt-get update && \
+    unzip master.zip
+WORKDIR "/nodejs-demo-master"
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "start", "0.0.0.0"]
+```
+
+- docker network ls
+
+```text
+docker network create -d bridge node-ubuntu
+docker network connect node-ubuntu ubuntu_l
+docker network connect node-ubuntu netology-node
+docker network ls
+NETWORK ID     NAME          DRIVER    SCOPE
+87977a6f0994   bridge        bridge    local
+dd7ffcefb8dc   host          host      local
+a674133452b7   node-ubuntu   bridge    local
+f9c18a85e48b   none          null      local
+```
+
+
+Тут видим настройки сети и подключенный контейнеры:
+
+- docker network inspect node-ubuntu
+
+```text
+[
+    {
+        "Name": "node-ubuntu",
+        "Id": "a674133452b7fcb04ee96bf4fa7c6d2b4ae0fc2f67bc45bbdc4159a9b178e138",
+        "Created": "2021-06-25T15:54:46.412440344Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "5fa7abc0c7a92d7144b8eb89658bee7d7d5238d4a4554f8d4454cd96373c9d13": {
+                "Name": "ubuntu_l",
+                "EndpointID": "e7825889502526d5de7218532c2c1a34c5f6632228e28e547b64ce165d50a736",
+                "MacAddress": "02:42:ac:12:00:02",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            },
+            "6e4e2382c64e86756b684a5c5c04fa1f86edfecf4882778a82689e34fe32addd": {
+                "Name": "netology-node",
+                "EndpointID": "2f921e500d6530728a63aef28736802f415416a6a26e1aafd4497528ec2a2065",
+                "MacAddress": "02:42:ac:12:00:03",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+```
+
+- [Вывод `curl 172.18.0.3:3000` из контейнера с ubuntu](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%203%20-%20%D0%B2%D1%8B%D0%B2%D0%BE%D0%B4%20curl.png)
 
