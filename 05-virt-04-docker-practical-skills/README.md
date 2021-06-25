@@ -74,7 +74,19 @@ CMD ["Hey, netology”]
 
 ## Ответ:
 
+## 2.1 Amazoncorretto
 
+- Скрин логов:
+
+[Задание 2 - amazoncorretto - logs.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20amazoncorretto%20-%20logs.png)
+
+- Скрин Web-интерфейса Jenkins:
+
+[Задание 2 - amazoncorretto - web.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20amazoncorretto%20-%20web.png)
+
+- Образ:
+
+https://hub.docker.com/r/vitalymozhaev/amazoncorretto-jenkins
 
 ## Задача 3 
 
