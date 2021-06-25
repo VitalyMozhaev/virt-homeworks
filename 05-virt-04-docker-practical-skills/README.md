@@ -76,17 +76,61 @@ CMD ["Hey, netology”]
 
 ## 2.1 Amazoncorretto
 
+- Dockerfile:
+
+```text
+FROM amazoncorretto
+
+ADD https://pkg.jenkins.io/redhat-stable/jenkins.repo /etc/yum.repos.d/
+
+RUN rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key && \
+    yum install -y jenkins
+EXPOSE 8080
+CMD ["java", "-jar", "/usr/lib/jenkins/jenkins.war"]
+```
+
 - Скрин логов:
 
-[Задание 2 - amazoncorretto - logs.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20amazoncorretto%20-%20logs.png)
+[Задание 2.1 - amazoncorretto - logs.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20amazoncorretto%20-%20logs.png)
 
 - Скрин Web-интерфейса Jenkins:
 
-[Задание 2 - amazoncorretto - web.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20amazoncorretto%20-%20web.png)
+[Задание 2.1 - amazoncorretto - web.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20amazoncorretto%20-%20web.png)
 
 - Образ:
 
 https://hub.docker.com/r/vitalymozhaev/amazoncorretto-jenkins
+
+## 2.2 Ubuntu
+
+- Dockerfile:
+
+```text
+FROM ubuntu
+
+ADD https://pkg.jenkins.io/debian/jenkins.io.key /tmp/
+
+RUN apt-get update && \
+    apt-get install -y gnupg ca-certificates && \
+    apt-key add /tmp/jenkins.io.key && \
+    sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ >> /etc/apt/sources.list' && \
+    apt-get update && \
+    apt-get install -y openjdk-11-jdk openjdk-11-jre jenkins
+EXPOSE 8080
+CMD ["java", "-jar", "/usr/share/jenkins/jenkins.war"]
+```
+
+- Скрин логов:
+
+[Задание 2.2 - ubuntu - logs.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20ubuntu%20-%20logs.png)
+
+- Скрин Web-интерфейса Jenkins:
+
+[Задание 2.2 - ubuntu - web.png](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/05-virt-04-docker-practical-skills/%D0%97%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%202%20-%20ubuntu%20-%20web.png)
+
+- Образ:
+
+https://hub.docker.com/r/vitalymozhaev/ubuntu-jenkins
 
 ## Задача 3 
 
