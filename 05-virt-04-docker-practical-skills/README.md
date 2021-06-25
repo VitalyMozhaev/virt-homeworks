@@ -172,7 +172,7 @@ EXPOSE 3000
 CMD ["npm", "start", "0.0.0.0"]
 ```
 
-- docker network ls
+- docker network
 
 ```text
 docker network create -d bridge node-ubuntu
@@ -187,7 +187,7 @@ f9c18a85e48b   none          null      local
 ```
 
 
-Тут видим настройки сети и подключенный контейнеры:
+Тут видим настройки сети и подключенные контейнеры:
 
 - docker network inspect node-ubuntu
 
