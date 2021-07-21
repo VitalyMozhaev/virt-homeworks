@@ -128,13 +128,103 @@ test_database=# SELECT MAX(avg_width) max_avg_width FROM pg_stats WHERE tablenam
 поиск по ней занимает долгое время. Вам, как успешному выпускнику курсов DevOps в нетологии предложили
 провести разбиение таблицы на 2 (шардировать на orders_1 - price>499 и orders_2 - price<=499).
 
-Предложите SQL-транзакцию для проведения данной операции.
+**Предложите SQL-транзакцию для проведения данной операции.**
+
+
+Можно было бы использовать секционирование с использованием наследования:
+
+```text
+CREATE TABLE orders_1 (CHECK (price > 499)) INHERITS (orders);
+CREATE TABLE orders_2 (CHECK (price <= 499)) INHERITS (orders);
+```
+
+Но в данном случае, насколько я понял, нужно дописывать триггерную функцию для распределения значений по таблицам.
+Удобнее пересоздать таблицу с поддержкой секционирования, используя декларативное секционирование, и заполнить её существующими данными.
+
+```text
+BEGIN TRANSACTION;
+
+CREATE TABLE public.orders_main (
+    id integer NOT NULL,
+    title character varying(80) NOT NULL,
+    price integer DEFAULT 0
+) PARTITION BY RANGE(price);
+
+CREATE TABLE orders_1 PARTITION OF orders_main FOR VALUES FROM (500) TO (MAXVALUE);
+CREATE TABLE orders_2 PARTITION OF orders_main FOR VALUES FROM (MINVALUE) TO (500);
+
+INSERT INTO orders_main SELECT * FROM orders;
+
+COMMIT;
+
+test_database=# SELECT * FROM orders_main;
+ id |        title         | price
+----+----------------------+-------
+  1 | War and peace        |   100
+  3 | Adventure psql time  |   300
+  4 | Server gravity falls |   300
+  5 | Log gossips          |   123
+  7 | Me and my bash-pet   |   499
+  2 | My little database   |   500
+  6 | WAL never lies       |   900
+  8 | Dbiezdmin            |   501
+(8 rows)
+
+test_database=# SELECT * FROM orders_1;
+ id |       title        | price
+----+--------------------+-------
+  2 | My little database |   500
+  6 | WAL never lies     |   900
+  8 | Dbiezdmin          |   501
+(3 rows)
+
+test_database=# SELECT * FROM orders_2;
+ id |        title         | price
+----+----------------------+-------
+  1 | War and peace        |   100
+  3 | Adventure psql time  |   300
+  4 | Server gravity falls |   300
+  5 | Log gossips          |   123
+  7 | Me and my bash-pet   |   499
+(5 rows)
+```
 
 Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?
+
+`Невозможно превратить обычную таблицу в партиционированную или наоборот, поэтому при проектировании таблицы "orders" нужно было создать таблицу с поддержкой секционирования.
+Это позволило бы секционировать уже существующую таблицу с данными.`
 
 ## Задача 4
 
 Используя утилиту `pg_dump` создайте бекап БД `test_database`.
 
+`docker exec -t netology_psql_13 pg_dump -U postgres test_database -f /var/lib/postgresql/backups/dump_test_database.sql`
+
 Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?
 
+```text
+По данному вопросу нашёл 2 решения:
+
+1. Ограничения уникальности (а значит и первичные ключи) в секционированных таблицах должны включать все столбцы ключа разбиения.
+
+CREATE UNIQUE INDEX title_unique ON orders_main (title, price);
+
+В этом случае, уникальными должны быть пара значений - title и price.
+Т.е., из нашей таблички orders_main строка "War and peace - 100" и строка "War and peace - 101" это уникальные значения.
+
+
+2. Создать ограничение-исключение, охватывающее всю секционированную таблицу, нельзя; можно только поместить такое ограничение в каждую отдельную секцию с данными. И это также является следствием того, что установить ограничения, действующие между секциями, невозможно.
+
+Создаём ограничение уникальности в каждой секции:
+
+CREATE UNIQUE INDEX title_unique_1 ON orders_1 (title);
+CREATE UNIQUE INDEX title_unique_2 ON orders_2 (title);
+
+В этом же случае уникальность будет соблюдаться внутри каждой секции, но не между секциями.
+Т.е., в нашей секционированной табличке orders_main уже есть строка "War and peace - 100", которая хранится в секции orders_2,
+если мы попытаемся добавить строку "War and peace - 200", то получим ошибку уникального значения поля title (War and peace).
+Однако, если мы добавим строку "War and peace - 777", то эта строка успешко добавится в табличку orders_main и будет размещена
+в секции orders_1, где значения title="War and peace" ещё нет.
+
+Тут уж, как говорится, каждый решает сам, что важнее в рамках общей задачи хранения данных.
+```
