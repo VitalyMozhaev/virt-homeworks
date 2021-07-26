@@ -80,6 +80,25 @@ Terraform и Ansible, Packer, связку Kubernetes + Docker, а так же T
 Установите терраформ при помощи менеджера пакетов используемого в вашей операционной системе.
 В виде результата этой задачи приложите вывод команды `terraform --version`.
 
+```text
+# Проверяем, что ваша система обновлена и установлены пакеты gnupg, software-properties-common и curl.
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+
+# Добавляем ключ HashiCorp GPG.
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+
+# Добавляем официальный репозиторий HashiCorp Linux.
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+
+# Обновляемся и устанавливаем terraform CLI.
+sudo apt-get update && sudo apt-get install terraform
+// Проверяем
+terraform --v
+
+Terraform v1.0.3
+on linux_amd64
+```
+
 ## Задача 3. Поддержка легаси кода. 
 
 В какой-то момент вы обновили терраформ до новой версии, например с 0.12 до 0.13. 
@@ -89,4 +108,28 @@ Terraform и Ansible, Packer, связку Kubernetes + Docker, а так же T
 
 В виде результата этой задачи приложите вывод `--version` двух версий терраформа доступных на вашем компьютере 
 или виртуальной машине.
+
+```text
+# Создаём каталог
+mkdir -p /home/vagrant/terraform/1.0.2/
+cd /home/vagrant/terraform/1.0.2/
+
+# Загружаем архив
+wget https://releases.hashicorp.com/terraform/1.0.2/terraform_1.0.2_linux_amd64.zip
+
+# Распаковываем
+unzip terraform_1.0.2_linux_amd64.zip
+
+# Делаем симлинк
+sudo ln -s /home/vagrant/terraform/1.0.2/terraform /usr/bin/terraform102
+
+# Проверяем
+terraform102 --version
+
+Terraform v1.0.2
+on linux_amd64
+
+Your version of Terraform is out of date! The latest version
+is 1.0.3. You can update by downloading from https://www.terraform.io/downloads.html
+```
 
