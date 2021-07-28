@@ -27,6 +27,16 @@ AWS предоставляет достаточно много бесплатн�
 
 В виде результата задания приложите вывод команды `aws configure list`.
 
+```text
+vagrant@vagrant:~/aws$ aws configure list
+      Name                    Value             Type    Location
+      ----                    -----             ----    --------
+   profile                <not set>             None    None
+access_key     ****************YXFX              env
+secret_key     ****************MPNt              env
+    region                us-west-2      config-file    ~/.aws/config
+```
+
 
 ## Задача 2. Созданием ec2 через терраформ. 
 
