@@ -59,8 +59,46 @@ secret_key     ****************MPNt              env
     * Идентификатор подсети в которой создан инстанс.  
 1. Если вы выполнили первый пункт, то добейтесь того, что бы команда `terraform plan` выполнялась без ошибок. 
 
+```text
+terraform init
+
+Initializing the backend...
+
+Initializing provider plugins...
+- Finding hashicorp/aws versions matching "~> 3.0"...
+- Installing hashicorp/aws v3.51.0...
+- Installed hashicorp/aws v3.51.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform has been successfully initialized!
+```
+
+Команда terraform plan у меня выдаёт ошибку:
+
+```text
+ terraform plan
+╷
+│ Error: OptInRequired: You are not subscribed to this service. Please go to http://aws.amazon.com to subscribe.
+│       status code: 401, request id: 702aed06-36ce-4198-95eb-7739f90fcd85
+│
+│   with data.aws_ami.ubuntu,
+│   on main.tf line 12, in data "aws_ami" "ubuntu":
+│   12: data "aws_ami" "ubuntu" {
+│
+╵
+```
+Это связано с тем, что мой личный кабинет AWS не смог привязать платёжную карту, поэтому ограничивает функционал.
+
 
 В качестве результата задания предоставьте:
 1. Ответ на вопрос: при помощи какого инструмента (из разобранных на прошлом занятии) можно создать свой образ ami?
-1. Ссылку на репозиторий с исходной конфигурацией терраформа.  
- 
+
+`Подготовить образ ami поможет Packer, который позволяет легко создавать образы машин в автоматическом режиме.`
+
+3. Ссылку на репозиторий с исходной конфигурацией терраформа.
+
+https://github.com/VitalyMozhaev/devops-netology/tree/master/terraform 
