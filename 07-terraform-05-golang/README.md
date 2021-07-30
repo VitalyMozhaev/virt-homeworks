@@ -45,4 +45,49 @@
 
 ## Задача 4. Протестировать код (не обязательно).
 
-Создайте тесты для функций из предыдущего задания. 
+Создайте тесты для функций из предыдущего задания.
+
+## Ответы:
+
+`Установил IDE GoLand и настроил Go из среды разработки (скачал и установил Go 1.16.6)`
+
+Все программы в одном файле main.go:
+
+https://github.com/VitalyMozhaev/virt-homeworks/blob/main/07-terraform-05-golang/main.go
+
+Все тесты в одном файле main_test.go:
+
+https://github.com/VitalyMozhaev/virt-homeworks/blob/main/07-terraform-05-golang/main_test.go
+
+1. Напишите программу для перевода метров в футы (1 фут = 0.3048 метр). Можно запросить исходные данные 
+у пользователя, а можно статически задать в коде.
+
+    Задача [func task1](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/07-terraform-05-golang/main.go)
+
+    Результат:
+
+    ```text
+    Введите длину в метрах: 2
+    6.561679790026246
+    ```
+    
+1. Напишите программу, которая найдет наименьший элемент в любом заданном списке, например:
+
+    Задача [func task2](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/07-terraform-05-golang/main.go)
+    
+    Результат:
+    
+    ```text
+    Наименьшее значение: 9
+    ```
+    
+1. Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3. То есть `(3, 6, 9, …)`.
+
+    Задача [func task3](https://github.com/VitalyMozhaev/virt-homeworks/blob/main/07-terraform-05-golang/main.go)
+    
+    Результат:
+    
+    ```text
+    числа от 1 до 100, которые делятся на 3: [3 6 9 12 15 18 21 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99]
+    ```
+    
